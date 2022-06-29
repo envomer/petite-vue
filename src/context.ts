@@ -58,7 +58,16 @@ export const createScopedContext = (ctx: Context, data = {}): Context => {
           return Reflect.set(parentScope, key, val)
         }
         return Reflect.set(target, key, val, receiver)
-      }
+      },
+      get(target, p, receiver) {
+        // @ts-ignore
+        if (typeof data[p] !== 'undefined') {
+          // @ts-ignore
+          return data[p]
+        }
+
+        return mergedScope[p]
+      },
     })
   )
 
